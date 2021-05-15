@@ -86,7 +86,6 @@ RUN npm install --save --save-exact jsreport-ejs@2.2.0 \
         jsreport-electron-pdf@3.2.0 \
         phantomjs-exact-2-1-1@0.1.0
 
-COPY --chown=jsreport:jsreport editConfig.js /app/editConfig.js
 RUN node editConfig.js
 
 RUN npm uninstall -g jsreport-cli && npm cache clean -f && rm -rf /tmp/*
