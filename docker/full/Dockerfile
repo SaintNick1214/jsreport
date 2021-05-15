@@ -23,17 +23,6 @@ RUN adduser --disabled-password --gecos "" jsreport && \
     rm fop.zip && \
     chmod +x fop-2.1/fop && \
     apt-get update && \
-    # chrome
-    apt-get install -y libgconf-2-4 && \
-    wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
-    sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' && \
-    apt-get update && \
-    # install latest chrome just to get package deps installed
-    apt-get install -y lsb-release libappindicator3-1 google-chrome-stable fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst --no-install-recommends && \
-    # then replace that chrome with specific chrome version, see https://github.com/webnicer/chrome-downloads for available versions
-    wget https://github.com/webnicer/chrome-downloads/raw/master/x64.deb/google-chrome-stable_79.0.3945.130-1_amd64.deb && \
-    dpkg -i ./google-chrome*.deb && \
-    rm google-chrome*.deb && \
     # phantomjs
     curl -Lo phantomjs.tar.bz2 https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.8-linux-x86_64.tar.bz2 && \
     tar jxvf phantomjs.tar.bz2 && \
@@ -70,8 +59,6 @@ ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 
 WORKDIR /app
 
-# the chrome was already installed from apt-get
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
 
 RUN npm install -g jsreport-cli
 
@@ -79,6 +66,8 @@ RUN jsreport init 2.11.0
 
 RUN npm install --save --save-exact jsreport-ejs@2.2.0 \
         jsreport-pug@3.1.0 \
+		imagemin@7.0.1 \
+		imagemin-pngquant \
         jsreport-azure-storage@1.1.1 \
         jsreport-phantom-pdf@2.6.1 \
         jsreport-phantom-image@2.1.1 \
@@ -107,7 +96,6 @@ COPY --chown=jsreport:jsreport . /app
 
 ENV PATH "$PATH:/fop-2.1"
 ENV NODE_ENV production
-ENV chrome_launchOptions_executablePath google-chrome-stable
 ENV chrome_launchOptions_args --no-sandbox,--disable-dev-shm-usage
 
 CMD ["bash", "/app/run.sh"]
