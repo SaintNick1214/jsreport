@@ -9,6 +9,8 @@ RUN adduser --disabled-password --gecos "" jsreport && \
     # phantom/electron
     apt-get install -y --no-install-recommends libgtk2.0-dev \
         libxtst-dev \
+	libatk-bridge2.0-0 \
+	libgtk-3-0 \
         libxss1 \
         libgconf2-dev \
         libnss3-dev \
