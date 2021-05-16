@@ -7,8 +7,13 @@ if [ "$(ls -A /jsreport)" ]; then
   if [ ! -d "/jsreport/data" ]; then
     mkdir "/jsreport/data"
   fi
+  
+  if [ ! -d "/jsreport/src" ]; then
+    mkdir "/jsreport/src"
+  fi
 
   ln -nsf "/jsreport/data" "/app/data"
+  ln -nsf "/jsreport/src" "/app/src"
 
   # copy default config
   if [ ! -f "/jsreport/jsreport.config.json" ]; then
