@@ -91,8 +91,9 @@ RUN node editConfig.js
 
 RUN npm uninstall -g jsreport-cli && npm cache clean -f && rm -rf /tmp/*
 
-COPY --chown=jsreport:jsreport run.sh /app/run.sh
+COPY --chown=jsreport:jsreport /docker/full/run.sh /app/run.sh
 COPY --chown=jsreport:jsreport . /app
+COPY --chown=jsreport:jsreport /docker/full/. /app
 
 ENV PATH "$PATH:/fop-2.1"
 ENV NODE_ENV production
